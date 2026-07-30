@@ -28,6 +28,7 @@ services:
       MORGAN_FORMAT: combined
       NODE_ENV: production
       EVENT_RETENTION_DAYS: 0
+      TRUST_PROXY: "true"
     depends_on:
       - mongodb
 

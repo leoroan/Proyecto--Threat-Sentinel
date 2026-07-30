@@ -40,6 +40,20 @@ const config = Object.freeze({
 
   /** Días de retención de eventos en MongoDB. 0 = sin límite */
   eventRetentionDays: parseInt(process.env.EVENT_RETENTION_DAYS, 10) || 0,
+
+  /**
+   * Configuración de trust proxy para Express.
+   * - true: confía en todos los proxies (útil tras Nginx/Docker/Cloudflare)
+   * - false: no confía en ningún proxy (desarrollo local)
+   * - número: confía en N proxies consecutivos
+   * - string: lista de IPs/subredes de confianza
+   */
+  trustProxy:
+    process.env.TRUST_PROXY === "true"
+      ? true
+      : process.env.TRUST_PROXY === "false"
+        ? false
+        : process.env.TRUST_PROXY || false,
 });
 
 export default config;

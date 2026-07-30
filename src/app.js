@@ -16,6 +16,11 @@ import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
 
+// Trust proxy: necesario cuando la app está detrás de un proxy reverso
+// (Nginx, Docker, Kubernetes, Cloudflare, etc.) para que Express respete
+// los headers X-Forwarded-For y express-rate-limit identifique IPs correctamente.
+app.set("trust proxy", config.trustProxy);
+
 // Seguridad: Helmet protege headers HTTP
 app.use(helmet());
 

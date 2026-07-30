@@ -12,6 +12,25 @@ const rootPath = resolve(__dirname, "..", "..");
 
 dotenv.config({ path: resolve(rootPath, ".env") });
 
+/**
+ * Configuración de trust proxy para Express.
+ * - true: confía en todos los proxies (útil tras Nginx/Docker/Cloudflare)
+ * - false: no confía en ningún proxy (desarrollo local)
+ * - número: confía en N proxies consecutivos
+ * - string: lista de IPs/subredes de confianza
+ */
+function parseTrustProxy(value) {
+  if (value === undefined) return false;
+
+  if (value === "true") return true;
+  if (value === "false") return false;
+
+  const num = Number(value);
+  if (!Number.isNaN(num)) return num;
+
+  return value;
+}
+
 const config = Object.freeze({
   /** Puerto en el que escuchará el servidor HTTP */
   port: parseInt(process.env.PORT, 10) || 3000,
@@ -41,19 +60,7 @@ const config = Object.freeze({
   /** Días de retención de eventos en MongoDB. 0 = sin límite */
   eventRetentionDays: parseInt(process.env.EVENT_RETENTION_DAYS, 10) || 0,
 
-  /**
-   * Configuración de trust proxy para Express.
-   * - true: confía en todos los proxies (útil tras Nginx/Docker/Cloudflare)
-   * - false: no confía en ningún proxy (desarrollo local)
-   * - número: confía en N proxies consecutivos
-   * - string: lista de IPs/subredes de confianza
-   */
-  trustProxy:
-    process.env.TRUST_PROXY === "true"
-      ? true
-      : process.env.TRUST_PROXY === "false"
-        ? false
-        : process.env.TRUST_PROXY || false,
+  trustProxy: parseTrustProxy(process.env.TRUST_PROXY),
 });
 
 export default config;

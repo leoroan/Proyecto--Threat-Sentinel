@@ -1,0 +1,41 @@
+{
+  "name": "threat-sentinel",
+  "version": "1.0.0",
+  "description": "Microservicio REST para detectar, clasificar, almacenar y exponer información sobre intentos de acceso sospechosos, scanners automáticos, bots y posibles ataques.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test tests/**/*.test.js"
+  },
+  "keywords": [
+    "security",
+    "threat-detection",
+    "ids",
+    "express",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leoroan/Proyecto--Threat-Sentinel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/leoroan/Proyecto--Threat-Sentinel/issues"
+  },
+  "homepage": "https://github.com/leoroan/Proyecto--Threat-Sentinel#readme",
+  "dependencies": {
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.1",
+    "helmet": "^8.3.0",
+    "joi": "^18.2.3",
+    "mongoose": "^9.9.0",
+    "morgan": "^1.11.0",
+    "pino": "^10.3.1"
+  }
+}

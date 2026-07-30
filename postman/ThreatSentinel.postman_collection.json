@@ -1,0 +1,172 @@
+{
+  "info": {
+    "name": "Threat Sentinel API",
+    "description": "Colección de Postman para la API de Threat Sentinel - Microservicio de detección de amenazas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "threat-sentinel"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Verifica que el servicio esté funcionando"
+      },
+      "response": [
+        {
+          "name": "OK",
+          "status": "OK",
+          "code": 200,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"status\": \"ok\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Event",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ip\": \"192.168.1.100\",\n  \"method\": \"GET\",\n  \"path\": \"/.env\",\n  \"originalUrl\": \"/.env\",\n  \"query\": {},\n  \"headers\": {\n    \"user-agent\": \"Mozilla/5.0\",\n    \"host\": \"example.com\"\n  },\n  \"userAgent\": \"Mozilla/5.0\",\n  \"referer\": \"\",\n  \"host\": \"example.com\",\n  \"protocol\": \"http\",\n  \"httpVersion\": \"1.1\",\n  \"responseStatus\": 404,\n  \"sourceApplication\": \"postman-test\",\n  \"notes\": \"Evento de prueba desde Postman\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/events",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "events"]
+        },
+        "description": "Registra un nuevo evento de amenaza. Solo se almacenan eventos considerados sospechosos."
+      },
+      "response": [
+        {
+          "name": "Created",
+          "status": "Created",
+          "code": 201,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"_id\": \"65a1b2c3d4e5f6a7b8c9d0e1\",\n  \"ip\": \"192.168.1.100\",\n  \"method\": \"GET\",\n  \"path\": \"/.env\",\n  \"severity\": \"high\",\n  \"category\": \"dotenv\",\n  \"matchedRule\": \"dotenv-access\",\n  \"reason\": \"Intento de acceso al archivo .env con credenciales\",\n  \"createdAt\": \"2024-01-12T10:30:00.000Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "List Events",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/events?page=1&limit=10&sort=createdAt&order=desc",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "events"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" },
+            { "key": "sort", "value": "createdAt" },
+            { "key": "order", "value": "desc" },
+            { "key": "severity", "value": "", "disabled": true },
+            { "key": "category", "value": "", "disabled": true },
+            { "key": "ip", "value": "", "disabled": true },
+            { "key": "sourceApplication", "value": "", "disabled": true },
+            { "key": "desde", "value": "", "disabled": true },
+            { "key": "hasta", "value": "", "disabled": true }
+          ]
+        },
+        "description": "Lista eventos con paginación y filtros opcionales"
+      },
+      "response": [
+        {
+          "name": "OK",
+          "status": "OK",
+          "code": 200,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"events\": [],\n  \"total\": 0,\n  \"page\": 1,\n  \"totalPages\": 0\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Event by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/events/{{eventId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "events", "{{eventId}}"]
+        },
+        "description": "Obtiene el detalle completo de un evento por su ID"
+      },
+      "response": [
+        {
+          "name": "OK",
+          "status": "OK",
+          "code": 200,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"_id\": \"65a1b2c3d4e5f6a7b8c9d0e1\",\n  \"ip\": \"192.168.1.100\",\n  \"method\": \"GET\",\n  \"path\": \"/.env\",\n  \"originalUrl\": \"/.env\",\n  \"severity\": \"high\",\n  \"category\": \"dotenv\",\n  \"matchedRule\": \"dotenv-access\",\n  \"reason\": \"Intento de acceso al archivo .env con credenciales\",\n  \"createdAt\": \"2024-01-12T10:30:00.000Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Delete Event",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/events/{{eventId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "events", "{{eventId}}"]
+        },
+        "description": "Elimina un evento por su ID"
+      },
+      "response": [
+        {
+          "name": "OK",
+          "status": "OK",
+          "code": 200,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"message\": \"Evento eliminado correctamente\",\n  \"event\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Stats",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "stats"]
+        },
+        "description": "Obtiene estadísticas agregadas de los eventos almacenados"
+      },
+      "response": [
+        {
+          "name": "OK",
+          "status": "OK",
+          "code": 200,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"totalEventos\": 0,\n  \"eventosHoy\": 0,\n  \"eventossUltimaHora\": 0,\n  \"topIPs\": [],\n  \"topPaths\": [],\n  \"topUserAgents\": [],\n  \"topCategorias\": [],\n  \"topAplicaciones\": []\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string",
+      "description": "URL base del servicio Threat Sentinel"
+    },
+    {
+      "key": "eventId",
+      "value": "",
+      "type": "string",
+      "description": "ID del evento a consultar/eliminar"
+    }
+  ]
+}

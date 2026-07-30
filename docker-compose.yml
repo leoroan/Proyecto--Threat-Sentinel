@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: threat-sentinel-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: threat-sentinel
+
+  app:
+    build: .
+    container_name: threat-sentinel-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/threat-sentinel
+      SOURCE_APPLICATION: threat-sentinel
+      CORS_ORIGINS: "*"
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 100
+      MORGAN_FORMAT: combined
+      NODE_ENV: production
+      EVENT_RETENTION_DAYS: 0
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:

@@ -28,7 +28,9 @@ async function createEvent(req, res, next) {
  */
 async function listEvents(req, res, next) {
   try {
-    const result = await eventService.listEvents(req.query);
+    // res.locals.query contiene los query params validados por Joi
+    const query = res.locals.query || req.query;
+    const result = await eventService.listEvents(query);
     res.json(result);
   } catch (error) {
     next(error);

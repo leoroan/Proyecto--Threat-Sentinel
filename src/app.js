@@ -13,6 +13,7 @@ import config from "./config/index.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import statsRoutes from "./routes/statsRoutes.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import internalThreatDetector from "./middlewares/internalThreatDetector.js";
 
 const app = express();
 
@@ -70,6 +71,11 @@ app.use(express.json({ limit: "1mb" }));
 
 // Logging HTTP con Morgan
 app.use(morgan(config.morganFormat));
+
+// Detector interno: monitorea todas las peticiones que recibe el propio
+// servicio y registra las sospechosas directamente en MongoDB.
+// Debe ir antes de las rutas para interceptar todas las peticiones.
+app.use(internalThreatDetector);
 
 // ============================================================
 // Rutas

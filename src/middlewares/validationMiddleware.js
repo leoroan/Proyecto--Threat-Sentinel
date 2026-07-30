@@ -1,12 +1,13 @@
 /**
  * Middleware de validación.
  *
- * Middleware que utiliza Joi para validar los datos de entrada
- * antes de que lleguen a los controladores. Si la validación falla,
- * lanza un error que es capturado por el errorHandler.
+ * Utiliza Joi para validar los datos de entrada antes de que lleguen
+ * a los controladores. Si la validación falla, lanza un error que
+ * es capturado por el errorHandler.
  *
- * Separación: la definición de los esquemas está en validators/,
- * la ejecución está aquí como middleware de Express.
+ * En Express 5, req.query y req.params son read-only (getter only),
+ * por lo que los valores validados se pasan al controlador mediante
+ * res.locals en lugar de reasignar la propiedad.
  */
 
 import {
@@ -33,6 +34,7 @@ function validateCreateEvent(req, res, next) {
 
 /**
  * Valida los query params para listar eventos.
+ * Los valores validados se almacenan en res.locals.query.
  */
 function validateListEvents(req, res, next) {
   const { error, value } = listEventsSchema.validate(req.query, {
@@ -43,12 +45,13 @@ function validateListEvents(req, res, next) {
     error.isJoi = true;
     return next(error);
   }
-  req.query = value;
+  res.locals.query = value;
   next();
 }
 
 /**
  * Valida el ID en los parámetros de la ruta.
+ * Los valores validados se almacenan en res.locals.params.
  */
 function validateId(req, res, next) {
   const { error, value } = idSchema.validate(req.params, {
@@ -59,7 +62,7 @@ function validateId(req, res, next) {
     error.isJoi = true;
     return next(error);
   }
-  req.params = value;
+  res.locals.params = value;
   next();
 }
 

@@ -16,7 +16,7 @@
     "express",
     "mongodb"
   ],
-  "author": "",
+  "author": "LRM",
   "license": "ISC",
   "repository": {
     "type": "git",

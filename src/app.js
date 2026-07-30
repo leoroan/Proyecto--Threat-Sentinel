@@ -81,6 +81,7 @@ app.get("/health", (req, res) => {
   res.json({
     status: healthStatus,
     database: dbStatus,
+    servicio: "threat-sentinel",
   });
 });
 
@@ -88,7 +89,7 @@ app.get("/health", (req, res) => {
 app.use("/api/events", eventRoutes);
 app.use("/api/stats", statsRoutes);
 
-// Manejador de errores (debe ir al final)
+// Manejador de errores
 app.use(errorHandler);
 
 export default app;

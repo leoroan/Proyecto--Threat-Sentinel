@@ -242,6 +242,12 @@ La arquitectura permite incorporar posteriormente sin modificar la estructura pr
 - WebSockets para dashboards en tiempo real
 - Dashboards en tiempo real
 
+**Hoy el sistema detecta y almacena, pero no toma acciones automáticas.** Podés consultar eventos, filtrarlos, ver estadísticas (top IPs, paths, user-agents) e investigar atacantes manualmente vía API.
+
+**Mañana**, la arquitectura ya está preparada para implementar: bloqueo automático de IPs (Fail2Ban/Cloudflare), listas negras, alertas en tiempo real (Discord/Telegram/Email), GeoIP, reputación de IP, exportación SIEM y dashboards con WebSockets. El README enumera todas estas capacidades como "Preparación para el Futuro".
+
+Recomendación de prioridad: 1) Alertas, 2) Listas negras + bloqueo, 3) GeoIP, 4) Integración Cloudflare/Fail2Ban.
+
 ## Licencia
 
 ISC
